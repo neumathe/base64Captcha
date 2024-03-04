@@ -59,5 +59,8 @@ func (s StoreSyncMap) Get(id string, clear bool) string {
 
 // Verify check a string value
 func (s StoreSyncMap) Verify(id, answer string, clear bool) bool {
+	if id == "" || answer == "" {
+		return false
+	}
 	return s.Get(id, clear) == answer
 }

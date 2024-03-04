@@ -18,7 +18,7 @@ package base64Captcha
 
 import "strings"
 
-// Captcha captcha basic information.
+// Captcha basic information.
 type Captcha struct {
 	Driver Driver
 	Store  Store
@@ -46,9 +46,12 @@ func (c *Captcha) Generate() (id, b64s, answer string, err error) {
 
 // Verify by a given id key and remove the captcha value in store,
 // return boolean value.
-// if you has multiple captcha instances which share a same store.
+// if you have multiple captcha instances which share a same store.
 // You may want to call `store.Verify` method instead.
 func (c *Captcha) Verify(id, answer string, clear bool) (match bool) {
+	if id == "" || answer == "" {
+		return false
+	}
 	vv := c.Store.Get(id, clear)
 	//fix issue for some redis key-value string value
 	vv = strings.TrimSpace(vv)
