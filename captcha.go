@@ -52,8 +52,10 @@ func (c *Captcha) Verify(id, answer string, clear bool) (match bool) {
 	if id == "" || answer == "" {
 		return false
 	}
-	vv := c.Store.Get(id, clear)
-	//fix issue for some redis key-value string value
+	vv := c.Store.Get(id, false)
 	vv = strings.TrimSpace(vv)
+	if vv == strings.TrimSpace(answer) && clear {
+		c.Store.Get(id, clear)
+	}
 	return vv == strings.TrimSpace(answer)
 }
